@@ -3,7 +3,7 @@ from json import dumps, loads
 from google.appengine.api import app_identity
 from google.appengine.api.urlfetch import fetch, POST
 
-api_key = "AIzaSyDD9iAgVgYWAu02C2jWdFCH60R6u9LTo2c"
+api_key = "Your Key"
 
 # It returns top 5 unique labels
 def vision_api_label_detection(uri):
