@@ -1,0 +1,15 @@
+application: phbt-ack
+version: blobstoretest
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: .*
+  script: main.application
+
+libraries:
+- name: jinja2
+  version: latest
+- name: markupsafe
+  version: latest

@@ -1,2 +1,3 @@
 # Google-Cloud-Platform
-My Google Cloud Platform mini projects and APIs
+
+My Google Cloud Platform mini projects

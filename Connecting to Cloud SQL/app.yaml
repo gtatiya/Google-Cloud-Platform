@@ -1,0 +1,22 @@
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: /
+  script: main.application
+
+libraries:
+- name: MySQLdb
+  version: "latest"
+- name: jinja2
+  version: "latest"
+- name: markupsafe
+  version: "latest"
+
+# [START env_variables]
+env_variables:
+    CLOUDSQL_CONNECTION_NAME: connect-to-the-cloud-sql:us-east4:my-cloud-sql-instance
+    CLOUDSQL_USER: root
+    CLOUDSQL_PASSWORD: root1
+# [END env_variables]
