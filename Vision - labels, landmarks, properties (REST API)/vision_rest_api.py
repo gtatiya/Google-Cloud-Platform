@@ -3,6 +3,8 @@ from json import dumps, loads
 from google.appengine.api import app_identity
 from google.appengine.api.urlfetch import fetch, POST
 
+api_key = "AIzaSyDD9iAgVgYWAu02C2jWdFCH60R6u9LTo2c"
+
 # It returns top 5 unique labels
 def vision_api_label_detection(uri):
 	"""This is the minimal code to accomplish a web detect request to the google vision api
@@ -17,9 +19,7 @@ def vision_api_label_detection(uri):
 	:type uri: str
 	:return: the result dictionary
 	:rtype: dict
-	"""
-
-	api_key = "AIzaSyDD9iAgVgYWAu02C2jWdFCH60R6u9LTo2c"
+	"""	
 
 	payload = {
 		"requests": [
@@ -71,8 +71,6 @@ def vision_api_landmark_detection(uri):
 	:return: the result dictionary
 	:rtype: dict
 	"""
-
-	api_key = "AIzaSyDD9iAgVgYWAu02C2jWdFCH60R6u9LTo2c"
 
 	payload = {
 		"requests": [
@@ -126,8 +124,6 @@ def vision_api_property_detection(uri):
 	:return: the result dictionary
 	:rtype: dict
 	"""
-
-	api_key = "AIzaSyDD9iAgVgYWAu02C2jWdFCH60R6u9LTo2c"
 
 	payload = {
 		"requests": [
