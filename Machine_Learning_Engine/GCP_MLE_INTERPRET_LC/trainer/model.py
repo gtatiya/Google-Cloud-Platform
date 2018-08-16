@@ -10,6 +10,8 @@ import six
 import tensorflow as tf
 from tensorflow.contrib.learn.python.learn.estimators.model_fn import ModeKeys as Modes
 
+import pickle
+
 # def read_and_decode(filename_queue):
 #   reader = tf.TFRecordReader()
 #   _, serialized_example = reader.read(filename_queue)
