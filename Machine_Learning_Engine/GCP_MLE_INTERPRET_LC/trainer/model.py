@@ -10,7 +10,7 @@ import six
 import tensorflow as tf
 from tensorflow.contrib.learn.python.learn.estimators.model_fn import ModeKeys as Modes
 
-import pickle
+import pickle, os
 
 # def read_and_decode(filename_queue):
 #   reader = tf.TFRecordReader()
@@ -42,6 +42,7 @@ import pickle
 #   return {'inputs': images}, labels
 
 def read_dadaset(db_file_name):
+  print("os.getcwd(): ", os.getcwd())
   bin_file = open(db_file_name, "rb")
 
   features = pickle.load(bin_file)
