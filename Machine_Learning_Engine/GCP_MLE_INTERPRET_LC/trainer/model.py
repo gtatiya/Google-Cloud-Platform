@@ -10,8 +10,6 @@ import six
 import tensorflow as tf
 from tensorflow.contrib.learn.python.learn.estimators.model_fn import ModeKeys as Modes
 
-from sklearn.model_selection import ShuffleSplit
-
 # def read_and_decode(filename_queue):
 #   reader = tf.TFRecordReader()
 #   _, serialized_example = reader.read(filename_queue)
@@ -49,13 +47,19 @@ def read_dadaset(db_file_name):
 
   bin_file.close()
 
-  y_lables = bi_lables
-  ss = ShuffleSplit(n_splits=1, test_size=0.25, random_state=0)
+  # y_lables = bi_lables
+  # ss = ShuffleSplit(n_splits=1, test_size=0.25, random_state=0)
 
-  for train_index, test_index in ss.split(features):
-      print("TRAIN:", len(train_index), "TEST:", len(test_index))
-      X_train, X_test = features[train_index], features[test_index]
-      y_train, y_test = y_lables[train_index], y_lables[test_index]
+  # for train_index, test_index in ss.split(features):
+  #     print("TRAIN:", len(train_index), "TEST:", len(test_index))
+  #     X_train, X_test = features[train_index], features[test_index]
+  #     y_train, y_test = y_lables[train_index], y_lables[test_index]
+
+  shuffle_indices = np.arange(len(features))
+  np.random.shuffle(shuffle_indices)
+  split_point = int(len(features)*0.75)
+  X_train, X_test = features[shuffle_indices][0:split_point], features[shuffle_indices][split_point:]
+  y_train, y_test = bi_lables[shuffle_indices][0:split_point], bi_lables[shuffle_indices][split_point:]
 
   return X_train, y_train, X_test, y_test
 
