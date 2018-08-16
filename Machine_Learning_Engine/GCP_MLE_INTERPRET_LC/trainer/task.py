@@ -4,8 +4,8 @@ import os
 import tensorflow as tf
 from tensorflow.contrib.training.python.training import hparam
 
-#import trainer.model as model
-import model
+import trainer.model as model
+
 
 def run_experiment(hparams):
   """Run the training and evaluate using the high level API"""
