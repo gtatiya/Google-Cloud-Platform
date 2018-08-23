@@ -11,6 +11,9 @@ import tensorflow as tf
 from tensorflow.contrib.learn.python.learn.estimators.model_fn import ModeKeys as Modes
 
 import pickle, os
+import numpy as np
+from tensorflow.python.lib.io import file_io
+from sklearn.preprocessing import label_binarize
 
 # def read_and_decode(filename_queue):
 #   reader = tf.TFRecordReader()
@@ -42,11 +45,15 @@ import pickle, os
 #   return {'inputs': images}, labels
 
 def read_dadaset(db_file_name):
-  print("os.getcwd(): ", os.getcwd())
-  bin_file = open(db_file_name, "rb")
+  #print("os.getcwd(): ", os.getcwd()) # os.getcwd():  /user_dir
+  #bin_file = open(db_file_name, "rb")
 
-  features = pickle.load(bin_file)
-  bi_lables = pickle.load(bin_file)
+  #features = pickle.load(bin_file)
+  #bi_lables = pickle.load(bin_file)
+
+  with file_io.FileIO(db_file_name, 'rb') as bin_file:
+    features = pickle.load(bin_file)
+    bi_lables = pickle.load(bin_file)
 
   bin_file.close()
 
@@ -63,6 +70,12 @@ def read_dadaset(db_file_name):
   split_point = int(len(features)*0.75)
   X_train, X_test = features[shuffle_indices][0:split_point], features[shuffle_indices][split_point:]
   y_train, y_test = bi_lables[shuffle_indices][0:split_point], bi_lables[shuffle_indices][split_point:]
+
+  y_train = label_binarize(y_train, classes=range(3))[:, 0:2]
+  y_test = label_binarize(y_test, classes=range(3))[:, 0:2]
+
+  #print("TRAIN Y:", y_train)
+  #print("TEST Y:", y_test)
 
   return X_train, y_train, X_test, y_test
 
@@ -90,8 +103,10 @@ def eval_input_fn(filename, batch_size=100):
   # else:
   #     inputs = (features, labels)
 
+  inputs = (X_test, y_test)
+
   # Convert the inputs to a Dataset.
-  dataset = tf.data.Dataset.from_tensor_slices(X_test)
+  dataset = tf.data.Dataset.from_tensor_slices(inputs)
 
   # Batch the examples
   assert batch_size is not None, "batch_size must not be None"
@@ -170,18 +185,19 @@ def eval_input_fn(filename, batch_size=100):
 #         mode, loss=loss, eval_metric_ops=eval_metric_ops)
 
 def my_model(features, labels, mode, params):
-  print(features, labels, mode, params)
+  #print(features, labels, mode, params)
+  #print("features: ", features)
     
   net = tf.layers.dense(inputs=features, units=1024, activation=tf.nn.relu)
-  print(net)
+  #print(net)
   net = tf.layers.dense(inputs=net, units=512, activation=tf.nn.relu)
-  print(net)
+  #print(net)
   net = tf.layers.dense(inputs=net, units=256, activation=tf.nn.relu)
-  print(net)
+  #print(net)
   net = tf.layers.dense(inputs=net, units=128, activation=tf.nn.relu)
-  print(net)
+  #print(net)
   logits = tf.layers.dense(net, 2, name='logits')
-  print("logits: ", logits)
+  #print("logits: ", logits)
 
   # Compute predictions.
   predicted_classes = tf.argmax(logits, 1)
@@ -195,7 +211,9 @@ def my_model(features, labels, mode, params):
   
   
   # Compute loss.
+  #print("labels: ", labels)
   loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits=logits, labels=labels))
+  #loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=labels))
 
   # Compute evaluation metrics.
   labels_new = tf.argmax(labels, 1)
@@ -207,7 +225,7 @@ def my_model(features, labels, mode, params):
   tf.summary.scalar('accuracy', accuracy[1])
   
   if mode == tf.estimator.ModeKeys.EVAL:
-      print(mode, loss, metrics)
+      #print(mode, loss, metrics)
       return tf.estimator.EstimatorSpec(mode, loss=loss, eval_metric_ops=metrics)
 
   # Create training op.
