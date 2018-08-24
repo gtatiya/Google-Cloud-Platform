@@ -6,6 +6,16 @@ https://cloud.google.com/ml-engine/docs/tensorflow/getting-started-training-pred
 ```
 BUCKET_NAME=gayaba8aa5
 REGION=us-east1
+gsutil mb -l $REGION gs://$BUCKET_NAME
+```
+
+```
+gsutil cp "C:\Users\GyanT\Documents\GitHub\BrainSpec\ML\INTERPRET_LC\Database\INTERPRET_DOD_DB.bin" gs://gayaba8aa5/Database/INTERPRET_DOD_DB.bin
+```
+
+```
+BUCKET_NAME=gayaba8aa5
+REGION=us-east1
 DATASET=gs://$BUCKET_NAME/Database/INTERPRET_DOD_DB.bin
 JOB_NAME=train_interpret22
 OUTPUT_PATH=gs://$BUCKET_NAME/$JOB_NAME
